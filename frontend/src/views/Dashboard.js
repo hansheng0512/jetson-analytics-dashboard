@@ -52,13 +52,21 @@ import {
 import chartsData from '../output.json'
 import PerChart from './charts/PerChart';
 import { io } from "socket.io-client";
+import {useHistory} from "react-router-dom";
 function Dashboard(props) {
   const [bigChartData, setbigChartData] = useState("data2");
   const [monthlyData, setMonthlyData] = useState({ labels: [], values: [] })
   const [weeklyData, setWeeklyData] = useState({ labels: [], values: [] })
+  const history = useHistory()
   const setBgChartData = (name) => {
     setbigChartData(name);
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem('login') !== true) {
+      history.push('/login')
+    }
+  }, sessionStorage.getItem('login'))
 
   /* useEffect(()=>{
     const socket = io("http://localhost:3000");

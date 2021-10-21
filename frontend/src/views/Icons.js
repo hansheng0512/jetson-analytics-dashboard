@@ -21,8 +21,10 @@ import output from '../output.json'
 
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+import {useHistory} from "react-router-dom";
 function Icons() {
   const [data, setData] = useState({})
+  const history = useHistory()
   useEffect(() => {
     const socket = io("https://transit-ai.ngrok.io");
     socket.on("my event", d => {
@@ -35,6 +37,13 @@ function Icons() {
     // console.log(output[0])
     setData(output[0])
   }, [])
+
+  useEffect(() => {
+    if (sessionStorage.getItem('login') !== true) {
+      history.push('/login')
+    }
+  }, sessionStorage.getItem('login'))
+
   function isFloat(n) {
     return n === +n && n !== (n | 0);
   }
