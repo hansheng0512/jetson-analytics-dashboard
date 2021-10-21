@@ -63,10 +63,10 @@ function Dashboard(props) {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem('login') !== true) {
+    if (!!sessionStorage.getItem('login') !== true) {
       history.push('/login')
     }
-  }, sessionStorage.getItem('login'))
+  }, [])
 
   /* useEffect(()=>{
     const socket = io("http://localhost:3000");

@@ -29,6 +29,7 @@ function Icons() {
     const socket = io("https://transit-ai.ngrok.io");
     socket.on("my event", d => {
       setData(d)
+      console.log('d', d)
     })
     socket.on('disconnect', () => {
       // console.log('disco')
@@ -39,10 +40,10 @@ function Icons() {
   }, [])
 
   useEffect(() => {
-    if (sessionStorage.getItem('login') !== true) {
+    if (!!sessionStorage.getItem('login') !== true) {
       history.push('/login')
     }
-  }, sessionStorage.getItem('login'))
+  }, [])
 
   function isFloat(n) {
     return n === +n && n !== (n | 0);
