@@ -18,10 +18,12 @@
 import React, {useEffect, useState} from "react"
 import {Row, Col, Button} from "reactstrap";
 import {Image} from "antd";
+import {useHistory} from "react-router-dom";
 
 function ImageValidator() {
     const [currentImage, setCurrentImage] = useState('')
     const [noImage, setNoImage] = useState(true)
+    const history = useHistory()
 
     const getImage = () => {
         fetch("http://192.168.1.100:8080/retrieve-image", {
@@ -66,6 +68,12 @@ function ImageValidator() {
 
     useEffect(() => {
         getImage()
+    }, [])
+
+    useEffect(() => {
+        if (!!sessionStorage.getItem('login') !== true) {
+            history.push('/login')
+        }
     }, [])
 
     return (
