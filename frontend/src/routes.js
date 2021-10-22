@@ -23,6 +23,7 @@ import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+import ImageValidator from "./views/ImageValidator";
 
 var routes = [
   {
@@ -39,6 +40,14 @@ var routes = [
     rtlName: "الرموز",
     icon: "tim-icons icon-puzzle-10",
     component: Icons,
+    layout: "/admin",
+  },
+  {
+    path: "/validator",
+    name: "Validator",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-puzzle-10",
+    component: ImageValidator,
     layout: "/admin",
   },
   /* {
