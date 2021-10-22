@@ -15,25 +15,85 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-
-// reactstrap components
+import React, {useEffect, useState} from "react"
 import {Row, Col, Button} from "reactstrap";
 import {Image} from "antd";
 
 function ImageValidator() {
+    const [currentImage, setCurrentImage] = useState('')
+    const [noImage, setNoImage] = useState(true)
+
+    const getImage = () => {
+        fetch("http://192.168.1.100:8080/retrieve-image", {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then((result) => {
+                if (result.message === 'No Image') {
+                    setNoImage(true)
+                } else {
+                    setCurrentImage(result.base64_image)
+                    setNoImage(false)
+                }
+
+            })
+            .catch((error) => {
+                setNoImage(true)
+            })
+    }
+
+    const onSubmitResult = (result) => {
+        fetch("http://192.168.1.100:8080/valid-image", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "image_uuid": "d56c0876-5a1f-4f1c-b9c7-9b9dd2232607",
+                "result": !!result
+            })
+        })
+            .then(response => response.json())
+            .then((result) => {
+                console.log(result)
+                getImage()
+            })
+            .catch((error) => {
+                alert(error)
+                setNoImage(true)
+            })
+    }
+
+    useEffect(() => {
+        getImage()
+    }, [])
+
     return (
         <>
             <div className="content">
                 <Row>
-                    <Col sm="12" md={{ size: 12, offset: 4 }}>
-                        <img src={"https://www.androidbeat.com/wp-content/uploads/2014/05/new-google-logo-1024x398.png?ezimgfmt=rs:579x225/rscb8/ng:webp/ngcb8"} />
+                    <Col sm="12" md={4}>
+                    </Col>
+                    <Col sm="12" md={4}>
+                        {
+                            noImage ? (
+                                <center>
+                                    <h3>No Image</h3>
+                                </center>
+                            ) : (
+                                <div style={{ width: "100%" }}>
+                                    <img src={currentImage} />
+                                </div>
+                            )
+                        }
+                    </Col>
+                    <Col sm="12" md={4}>
                     </Col>
                 </Row>
                 <Row>
                     <Col sm="12" md={{ size: 12, offset: 5 }}>
-                        <Button>Accept</Button>
-                        <Button>Reject</Button>
+                        <Button onClick={() => onSubmitResult(true)}>Accept</Button>
+                        <Button onClick={() => onSubmitResult(false)}>Reject</Button>
                     </Col>
                 </Row>
             </div>
