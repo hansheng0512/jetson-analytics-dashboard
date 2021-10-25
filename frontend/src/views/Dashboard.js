@@ -74,6 +74,11 @@ function Dashboard(props) {
 
     useEffect(() => {
         const socket = io("http://127.0.0.1:8000");
+        
+        setInterval(function() {
+          socket.emit('getData');
+        }, 10) // 10 millseconds
+
         socket.on("data", d => {
             console.log('table', d)
             setCustomData(d)
